@@ -38,7 +38,7 @@ for i, item in enumerate(items):
 '''
 studentName = input("Enter student name: ")
 studentNumber = int(input("Enter student number: "))
-cityName = input("Enter city name (ex: BRANDON A): ")
+cityName = input("Enter city name (ex: BRANDON CDA): ")
 yearXrange = int(input("Enter starting range (in years): "))
 yearYrange = int(input("Enter ending range (in years): "))
 print(f"Pulling data for {cityName} from {yearXrange} to {yearYrange}...")
@@ -67,28 +67,39 @@ for y in range(yearXrange, yearYrange+1):
         url = f'http://climate.weather.gc.ca/prods_servs/cdn_climate_summary_report_e.html?intYear={y}&intMonth={m}&prov=MB&dataFormat=csv&btnSubmit=Download+data'
         #sleep(0.3)
         #with open(f'.\sheets\eng-climate-summaries-Manitoba-{j},{i}.csv', newline='') as csvfile:
-        with urllib.request.urlopen(url) as response:
-            csvfile = response.read().decode('utf-8').splitlines()
-            
-            for line in csvfile:
-                try:
-                    if cityName.upper() in line:
-                        row = line.split(',')
-                        #print(f'{m}/{y}', "Tm: ", str(row[4]), ", P: ", str(row[14]))
-                        tempData = ClimateData(m, y, row[4], row[14], row[1], row[2])
-                        climateDataArr.append(tempData)
-                        print(tempData)
-                except:
-                    print('ERROR: City not found')
-                    pass
+        try: 
+            with urllib.request.urlopen(url) as response:
+                csvfile = response.read().decode('utf-8').splitlines()
+                
+                for line in csvfile:
+                    try:
+                        if cityName.upper() in line:
+                            row = line.split(',')
+                            tempData = ClimateData(m, y, row[4], row[14], row[1], row[2])
+                            climateDataArr.append(tempData)
+                            print(tempData)
+                    except:
+                        print('ERROR: Cityname not found')
+                        pass
+        except:
+            print('ERROR: URL data not found')
+            tempData = ClimateData(m, y, "N/A", "N/A", "N/A", "N/A")
+            climateDataArr.append(tempData)
+            print(tempData)
 
 for i in range(len(climateDataArr)):
     if i < 12:
+        print("y1", i)
         climateDataArrY1.append(climateDataArr[i])
-    if i > 12 and i < 24:
+    elif i >= 12 and i < 24:
+        print("y2", i)
         climateDataArrY2.append(climateDataArr[i])
-    if i > 24 and i < 36:
+    elif i >= 24 and i < 36:
+        print("y3", i)
         climateDataArrY3.append(climateDataArr[i])
+
+
+
 
 f = open("demofile.csv", "a")
 f.write(f'''TSES 3002 2019 Swarm Assignment Data Template,,,,,,,,,,,,,,,
@@ -101,7 +112,7 @@ Site Longiture (as shown in database):,{str(climateDataArr[0].lon)},,,,,,,,,,,,,
 Years:,{climateDataArrY1[0].year},{climateDataArrY2[0].year},{climateDataArrY3[0].year},,,,,,,,,,,,
 ,,,,,,,,,,,,,,,
 Year,{climateDataArrY1[0].year},,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec,Average (Annual Mean Temp)
-Mean Temperature Tm (°C),,,{','.join([a.temp for a in climateDataArrY1])},
+Mean Temperature Tm (°C),,,{','.join([a.temp for a in climateDataArrY1])},{},
 Total Precipitation P (mm),,,{','.join([a.precip for a in climateDataArrY1])},
 ,,,,,,,,,,,,,,,
 Year,{climateDataArrY2[0].year},,
@@ -112,4 +123,4 @@ Year,{climateDataArrY3[0].year},,
 Mean Temperature Tm (°C),,,{','.join([a.temp for a in climateDataArrY3])},
 Total Precipitation P (mm),,,{','.join([a.precip for a in climateDataArrY3])},
 ,,,,,,,,,,,,,,,
-NOTES:,,,,,,,,,,,,,,,''')
+NOTES:,Assignment asks for BRANDON RCS outpost but only BRANDON CDA outpost was available,,,,,,,,,,,,,,''')
