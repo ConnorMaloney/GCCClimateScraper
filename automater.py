@@ -1,9 +1,6 @@
 import csv
-import shutil
-import tempfile
-from time import sleep
-
 import urllib.request 
+from time import sleep
  
 '''
 # Print iterations progress
@@ -27,9 +24,9 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     if iteration == total: 
         print()
 '''
-cityName = input("Enter city name (ex: BRANDON A): ")
-yearXrange = int(input("Enter starting range (in years): "))
-yearYrange = int(input("Enter ending range (in years): "))
+cityName = "BRANDON A" #input("Enter city name (ex: BRANDON A): ")
+yearXrange = 1957 #int(input("Enter starting range (in years): "))
+yearYrange = 1959 #int(input("Enter ending range (in years): "))
 print(f"Pulling data for {cityName} from {yearXrange} to {yearYrange}...")
 
 '''
@@ -59,18 +56,25 @@ class ClimateData:
     
 
 for y in range(yearXrange, yearYrange+1):
-    for m in range(1,13):
+    for m in range(1,2):
+        sleep(0.3)
         url = f'http://climate.weather.gc.ca/prods_servs/cdn_climate_summary_report_e.html?intYear={y}&intMonth={m}&prov=MB&dataFormat=csv&btnSubmit=Download+data'
         #sleep(0.3)
         #with open(f'.\sheets\eng-climate-summaries-Manitoba-{j},{i}.csv', newline='') as csvfile:
         with urllib.request.urlopen(url) as response:
             csvfile = response.read().decode('utf-8').splitlines()
+            #print(filter(lambda x: cityName in x, csvfile))
+            
             for line in csvfile:
+                #print(line)
                 try:
                     if cityName.upper() in line:
-                        print(f'{m}/{y}', line)
-                        #print(f'{m}/{y}', "Tm: ", row[4], ", P: ", row[14])
+                        print("MEMES")
+                        row = line.split(',')
+                        print(f'{m}/{y}', "Tm: ", str(row[4]), ", P: ", str(row[14]))
+                        #print(f'{m}/{y}', lineData[4])
                 except:
+                    print('ERROR: City not found')
                     pass
 
 #f = open("demofile.csv", "w")
