@@ -3,10 +3,7 @@ import shutil
 import tempfile
 from time import sleep
 
-import urllib.request
-
-
-url = 'http://climate.weather.gc.ca/prods_servs/cdn_climate_summary_report_e.html?intYear=2019&intMonth=2&prov=MB&dataFormat=csv&btnSubmit=Download+data'  
+import urllib.request 
  
 '''
 # Print iterations progress
@@ -30,9 +27,9 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     if iteration == total: 
         print()
 '''
-cityName = "BRANDON A" #input("Enter city name (ex: BRANDON A): ")
-yearXrange = 1956 #int(input("Enter starting range (in years): "))
-yearYrange = 1958 #int(input("Enter ending range (in years): "))
+cityName = input("Enter city name (ex: BRANDON A): ")
+yearXrange = int(input("Enter starting range (in years): "))
+yearYrange = int(input("Enter ending range (in years): "))
 print(f"Pulling data for {cityName} from {yearXrange} to {yearYrange}...")
 
 '''
@@ -59,39 +56,21 @@ class ClimateData:
     self.precip = precip
 '''
 
-
-with urllib.request.urlopen(url) as response:
-    csvfile = response.read().decode('utf-8').splitlines()
-    for line in csvfile:
-        if "BRANDON A" in line:
-            print(line)
-    #reader = csv.reader(csvfile, delimiter=',')
-    #print(type(reader))
-    '''
-    for row in reader:
-        #print(str(row))
-        try:
-            if row == ["BRANDON A"]:
-                print("Tm: ", row[4], ", P: ", row[14])
-        except:
-            pass
-            '''
     
 
-
-'''
-for i in range(yearXrange, yearYrange+1):
-    for j in range(1,13):
+for y in range(yearXrange, yearYrange+1):
+    for m in range(1,13):
+        url = f'http://climate.weather.gc.ca/prods_servs/cdn_climate_summary_report_e.html?intYear={y}&intMonth={m}&prov=MB&dataFormat=csv&btnSubmit=Download+data'
+        #sleep(0.3)
         #with open(f'.\sheets\eng-climate-summaries-Manitoba-{j},{i}.csv', newline='') as csvfile:
-        with open(contents.read(), newline='') as csvfile:
-            reader = csv.reader(csvfile, delimiter=',')
-            for row in reader:
+        with urllib.request.urlopen(url) as response:
+            csvfile = response.read().decode('utf-8').splitlines()
+            for line in csvfile:
                 try:
-                    if row[0] == cityName.upper():
-                        sleep(0.1)
-                        print(f'{j}/{i}', "Tm: ", row[4], ", P: ", row[14])
+                    if cityName.upper() in line:
+                        print(f'{m}/{y}', line)
+                        #print(f'{m}/{y}', "Tm: ", row[4], ", P: ", row[14])
                 except:
                     pass
 
 #f = open("demofile.csv", "w")
-'''
