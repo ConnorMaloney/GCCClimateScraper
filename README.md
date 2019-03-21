@@ -8,7 +8,7 @@ Simple python script that grabs city climate data from Government of Canada data
 4. Enter *cd Documents* to navigate to your documents directory
 5. Type python into the terminal, then drag and drop the script you downloaded (or manually type the path), like so:
 
-![screenshot](./TerminalScreenshot.png)
+![screenshot](./TerminalScreenshot.PNG)
 6. Press enter and input the following information, and you're done!
 
 
