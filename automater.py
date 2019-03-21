@@ -77,7 +77,7 @@ def build_summary_per_year(data):
     avg = round(sum(float((t.temp).strip('\"')) for t in data)/len(data), 2)
     precip_avg = round(sum(float((p.precip).strip('\"')) for p in data)/len(data), 2)
     return (
-        f"Year,{data[0].year},,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec,Average (Annual Mean Temp)\n"
+        f"Year,{data[0].year},,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec,Average\n"
         f"Mean Temperature Tm (°C),,,{','.join([a.temp for a in data])},{avg},\n"
         f"Total Precipitation P (mm),,,{','.join([a.precip for a in data])},{precip_avg},\n"
     )
