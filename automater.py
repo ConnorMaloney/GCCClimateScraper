@@ -29,7 +29,8 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
 # Input user info
 studentName = input("Enter student name (ex: Connor Maloney): ")
 studentNumber = int(input("Enter student number (ex: 100977005): "))
-cityName = input("Enter city name (ex: BRANDON CDA): ")
+province = input("Enter 2-letter province/territory (ex: MB for Manitoba, SK for Saskatchewan): ")
+cityName = input("Enter city name (ex: BRANDON CDA or REGINA RCS): ")
 yearXrange = int(input("Enter starting range in years (ex: 1956): "))
 yearYrange = int(input("Enter ending range in years (ex: 1958): "))
 
@@ -56,7 +57,7 @@ print(f"Pulling data for {cityName} from {yearXrange} to {yearYrange}...")
 for y in range(yearXrange, yearYrange+1):
     yearly_data = []
     for m in range(1,13):
-        url = f'http://climate.weather.gc.ca/prods_servs/cdn_climate_summary_report_e.html?intYear={y}&intMonth={m}&prov=MB&dataFormat=csv&btnSubmit=Download+data'
+        url = f'http://climate.weather.gc.ca/prods_servs/cdn_climate_summary_report_e.html?intYear={y}&intMonth={m}&prov={province}&dataFormat=csv&btnSubmit=Download+data'
         with urllib.request.urlopen(url) as response:
             csvfile = response.read().decode('utf-8').splitlines()
             for line in csvfile:
@@ -98,5 +99,5 @@ Years:,{','.join([str(d[0].year) for d in climate_data])},,,,,,,,,,,,
 ,,,,,,,,,,,,,,,
 NOTES:,Assignment asks for BRANDON RCS outpost but only BRANDON CDA outpost was available,,,,,,,,,,,,,,''')
 
-print(f"Download complete! File placed in {os.getcwd()} Please open the new demofile.csv there. :) Happy spreadsheeting!")
+print(f"Download complete! File placed in {os.getcwd()} Please open the new demofile.csv there. For graphs, edit this in excel as .xlsx and work from there. Happy spreadsheeting!")
 print("Note: If you already have an existing demofile.csv, please delete it and run this script to generate a new one.")
