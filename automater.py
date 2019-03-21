@@ -1,5 +1,6 @@
 # Script by Connor Maloney - 100977005
 
+import os
 import csv
 import urllib.request 
 from time import sleep
@@ -113,5 +114,5 @@ Total Precipitation P (mm),,,{','.join([a.precip for a in climateDataArrY3])},{p
 ,,,,,,,,,,,,,,,
 NOTES:,Assignment asks for BRANDON RCS outpost but only BRANDON CDA outpost was available,,,,,,,,,,,,,,''')
 
-print("Download complete! Please open the new demofile.csv in the directory where you placed this script :) Happy spreadsheeting!")
+print(f"Download complete! File placed in {os.getcwd()} Please open the new demofile.csv there. :) Happy spreadsheeting!")
 print("Note: If you already have an existing demofile.csv, please delete it and run this script to generate a new one.")
